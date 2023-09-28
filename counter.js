@@ -1,6 +1,11 @@
 const userNamesArray = []; // Массив для хранения всех ников
 const desiredUserNamesCount = SETNUMBER; // Количество желаемых уникальных ников
 
+// Функция для генерации случайного числа в заданном диапазоне
+function randomDelay(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 async function scrollToEnd() {
     const targetElement = document.querySelector("._aano");
 
@@ -9,7 +14,11 @@ async function scrollToEnd() {
 
     while (currentHeight !== previousHeight) {
         targetElement.scrollBy(0, currentHeight);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Подождать некоторое время после скролла
+
+        // Генерируем случайную задержку от 1 до 3 секунд перед следующей прокруткой
+        const delay = randomDelay(1000, 3000);
+        await new Promise(resolve => setTimeout(resolve, delay));
+
         previousHeight = currentHeight;
         currentHeight = targetElement.scrollHeight;
     }
@@ -19,12 +28,13 @@ async function loadUserNames() {
     await scrollToEnd();
 
     const userNamesSet = new Set();
-    const userNameSpans = document.querySelectorAll('span._aacl._aaco._aacw._aacx._aad7._aade');
+    const xpathExpression = '//span[@class="_aacl _aaco _aacw _aacx _aad7 _aade"]';
+    const userNameNodes = document.evaluate(xpathExpression, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
-    userNameSpans.forEach(userNameSpan => {
-        const userName = userNameSpan.textContent.trim();
+    for (let i = 0; i < userNameNodes.snapshotLength; i++) {
+        const userName = userNameNodes.snapshotItem(i).textContent.trim();
         userNamesSet.add(userName);
-    });
+    }
 
     // Convert the set to an array and store it in userNamesArray
     const uniqueUserNames = Array.from(userNamesSet).slice(0, desiredUserNamesCount);
