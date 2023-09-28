@@ -10,6 +10,10 @@ list2 = <<~HEREDOC
   VM533:42 62. example4
 HEREDOC
 
+# Удаляем исключения из второго списка
+exception = ['adamsandler', 'caseyneistat', 'crowncoal']
+list2 = list2.split("\n").reject { |line| exception.include?(line.split('. ').last) }.join("\n")
+
 # Разделяем списки на строки и очищаем их от лишнего
 cleaned_list1 = list1.split("\n").map { |line| line.split('. ').last }
 cleaned_list2 = list2.split("\n").map { |line| line.split('. ').last }
@@ -19,5 +23,5 @@ missing_names = cleaned_list2 - cleaned_list1
 
 # Выводим имена, которых нет в первом списке
 missing_names.each do |difference|
-  puts difference
+  puts 'https://www.instagram.com/' + difference
 end
