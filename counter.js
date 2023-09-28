@@ -1,5 +1,5 @@
 const userNamesArray = []; // Массив для хранения всех ников
-const desiredUserNamesCount = 95; // Количество желаемых уникальных ников
+const desiredUserNamesCount = SETNUMBER; // Количество желаемых уникальных ников
 
 async function scrollAndLoadUserNames() {
     const userNamesSet = new Set();
